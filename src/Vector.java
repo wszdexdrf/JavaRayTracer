@@ -1,34 +1,59 @@
 public class Vector {
-    static double dotProduct(double[] a, double[] b) {
-        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    double x, y, z;
+
+    Vector(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
-    static double[] add(double[] a, double[] b) {
-        return new double[] { a[0] + b[0], a[1] + b[1], a[2] + b[2] };
+    void createFromPolarCoordinates(double r, double phi, double theta) {
+        this.x = r * Math.sin(theta) * Math.cos(phi);
+        this.y = r * Math.sin(theta) * Math.sin(phi);
+        this.z = r * Math.cos(theta);
     }
 
-    static void addToA(double[] a, double[] b) {
-        a[0] = a[0] + b[0];
-        a[1] = a[1] + b[1];
-        a[2] = a[2] + b[2];
+    double dotProduct(Vector b) {
+        return this.x * b.x + this.y * b.y + this.z * b.z;
     }
 
-    static double[] negate(double[] a) {
-        return new double[] { -a[0], -a[1], -a[2] };
+    Vector scalarMulti(double lambda) {
+        return new Vector(lambda * x, lambda * y, lambda * z);
     }
 
-    static void normalize(double target, double[] a) {
-        double magnitude = Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
-        a[0] = a[0] / magnitude * target;
-        a[1] = a[1] / magnitude * target;
-        a[2] = a[2] / magnitude * target;
+    Vector add(Vector b) {
+        return new Vector(this.x + b.x, this.y + b.y, this.z + b.z);
     }
 
-    static double[] scalarMultiply(double[] a, double scalar) {
-        return new double[] { a[0] * scalar, a[1] * scalar, a[2] * scalar };
+    Vector negative() {
+        return new Vector(-x, -y, -z);
     }
 
-    static void display(double[] a) {
-        System.out.println(a[0] + ", " + a[1] + ", " + a[2]);
+    void addToSelf(Vector b) {
+        this.x += b.x;
+        this.y += b.y;
+        this.z += b.z;
+    }
+
+    void rotateZ(double cosTheta, double sinTheta) {
+        this.x = x * cosTheta - y * sinTheta;
+        this.y = x * sinTheta + y * cosTheta;
+    }
+
+    void rotateY(double cosTheta, double sinTheta) {
+        this.z = z * cosTheta - x * sinTheta;
+        this.x = z * sinTheta + x * cosTheta;
+    }
+
+    void rotateX(double cosTheta, double sinTheta) {
+        this.y = y * cosTheta - z * sinTheta;
+        this.z = y * sinTheta + z * cosTheta;
+    }
+
+    void normalize(double magnitude) {
+        double curMagn = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        this.x = this.x * magnitude / curMagn;
+        this.y = this.y * magnitude / curMagn;
+        this.z = this.z * magnitude / curMagn;
     }
 }

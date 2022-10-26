@@ -1,19 +1,20 @@
 public class Camera {
-    double[] focus;
-    double[] normalToViewingPlane;
-    double[] pointOnViewingPlane;
+    Vector focus;
+    Vector normalToViewingPlane;
+    Vector pointOnViewingPlane;
 
     Camera() {
-        this.focus = new double[]{0.0, 0.0, 0.0};
-        this.normalToViewingPlane = new double[]{0.0, 0.0, -1.0};
-        this.pointOnViewingPlane = new double[]{0.0, 0.0, -100.0};
+        this.focus = new Vector(0.0, 0.0, 0.0);
+        this.normalToViewingPlane = new Vector(0.0, 0.0, -1.0);
+        this.pointOnViewingPlane = new Vector(0.0, 0.0, -100.0);
     }
 
-    int[] checkPoint(double[] x, double[] d, int hs, int vs) {
-        double t = Vector.dotProduct(Vector.add(pointOnViewingPlane, Vector.negate(x)), normalToViewingPlane) / Vector.dotProduct(d, normalToViewingPlane);
-        double[] r = Vector.add(x, Vector.scalarMultiply(d, t));
-        int v1 = (int) Math.round(r[0]) * hs + 450;
-        int v2 = (int) Math.round(r[1]) * vs + 450;
-        return new int[]{v1, v2};
+    int[] checkPoint(Vector x, Vector d, int hs, int vs) {
+        double t = normalToViewingPlane.dotProduct(pointOnViewingPlane.add(x.negative()))
+                / normalToViewingPlane.dotProduct(d);
+        Vector r = x.add(d.scalarMulti(t));
+        int v1 = (int) Math.round(r.x) * hs + 450;
+        int v2 = (int) Math.round(r.y) * vs + 450;
+        return new int[] { v1, v2 };
     }
 }
